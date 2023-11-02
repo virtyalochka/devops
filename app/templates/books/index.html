@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% from 'pagination.html' import pagination %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="my-5">
+        <h2 class="mb-3 text-center text-uppercase font-weight-bold">Каталог книг</h2>
+    </div>
+
+    <div class="books-list container-fluid">
+        <div class="row mb-3 mt-3 gap-2 justify-content-around">
+            {% for book in books %}
+            <div class="col-sm-3 d-flex justify-content-center">
+
+                <div class="card my-2 border-dark" data-url="{{ url_for('books.show', book_id=book[0]) }}">
+                    <img class="card-img-top w-75 align-self-center mt-3" src="{{ url_for('media', filename=book.cover_filename) }}" alt="Обложка">
+                    <div class="card-body">
+                        <p class="card-title fw-bold">
+                            <span id="book_name">{{ book[1] }}</span>
+                        </p>
+                        <p class="card-text">
+                            {{ book[3] }}<br>
+                            Жанр(ы): {{ book.genres }}
+                        </p>
+                    </div>
+                    <div class="admin_buttons text-center">
+                        {% if current_user.is_authenticated %}
+                        {% if current_user.can('update', user) %}
+                        <a class="btn btn-primary" href="{{ url_for('books.edit', book_id=book.id) }}">Редактировать</a>
+                        {% endif %}
+                        {% if current_user.can('delete', user) %}
+                        <a href="{{ url_for('books.delete_book', book_id=book[0]) }}" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ book[0] }}">Удалить</a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                    {% set review_count = reviews_count(book[0]) %}
+                    {% if book.avg_rating %}
+                    <div class="card-footer text-muted">
+                        <p class="mb-2">
+                            Отзывы: {{ review_count }}
+                            <span>👍</span><span>{{ "%.2f" | format(book.avg_rating) }}</span>
+                        </p>
+                        <a class="btn btn-primary" href="{{ url_for('books.show', book_id=book[0]) }}">Подробнее</a>
+                    </div>
+                    {% else %}
+                    <a class="btn btn-primary" href="{{ url_for('books.show', book_id=book[0]) }}">Подробнее</a>
+                    {% endif %}
+                </div>
+                <div class="modal fade" id="confirmDeleteModal{{ book[0] }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel{{ book[0] }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmDeleteModalLabel{{ book[0] }}">Удаление книги</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Вы уверены, что хотите удалить книгу "{{ book[1] }}"?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                                <form method="POST" action="{{ url_for('books.delete_book', book_id=book[0]) }}">
+                                    <button type="submit" class="btn btn-danger">Да</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="admin_buttons text-center">
+        {% if current_user.is_authenticated %}
+        {% if current_user.can('create', user) %}
+        <a href="{{ url_for('books.create') }}">Добавить</a>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<div class="container mb-5">
+    {{ pagination(current_page, last_page, request.endpoint) }}
+</div>
+{% endblock %}

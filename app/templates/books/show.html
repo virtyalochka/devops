@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% from 'pagination.html' import render_pagination %}
+
+{% block content %}
+<div class="container">
+    <div class="title-area py-5 text-center">
+        <h1 class="display-4 mb-3 font-weight-bold">{{ book.title }}</h1>
+        <p class="lead mb-3">
+            {{ book.author }} | {{ book.publisher }} |
+            {% set reviews_count = reviews|length %}
+            {% if reviews_count % 10 == 1 %}
+            {{ reviews_count }} оценка
+            {% elif reviews_count % 10 == 2 or reviews_count % 10 == 3 or reviews_count % 10 == 4 %}
+            {{ reviews_count }} оценки
+            {% else %}
+            {{ reviews_count }} оценок
+            {% endif %}
+        </p>
+        {% if book.cover_filename %}
+            <img class="card-img-top w-75 align-self-center mt-3" src="{{ url_for('media', filename=book.cover_filename) }}" alt="Обложка">
+        {% endif %}
+    </div>
+
+    <div class="mt-5">
+        <section class="about mb-5">
+            <h2 class="mb-3 text-center text-uppercase font-weight-bold">О книге</h2>
+            <div class="container">
+                <p class="description w-75 mb-5 mx-auto">
+                    Издательство: {{ book.publisher }}
+                </p>
+                <p class="description w-75 mb-5 mx-auto">
+                    Жанр(ы):
+                    {% for genre in genres %}
+                    {{ genre }}
+                    {% endfor %}
+                </p>
+                <div>{{ book_description_html|safe }}</div>
+            </div>
+        </section>
+
+        <section class="review mb-5">
+            <div class="reviews-list mt-3 mb-3">
+                <h2 class="mb-3 text-center text-uppercase font-weight-bold">Отзывы по книге</h2>
+                {% if current_user.is_authenticated %}
+                {% if not has_reviewed %}
+                <div class="text-center mb-3">
+                    <a href="{{ url_for('books.give_review', book_id=book.id) }}" class="btn btn-primary">Оставить
+                        отзыв</a>
+                </div>
+                {% else %}
+                <div class="card border-dark mb-3">
+                    <div class="card-header">Ваш отзыв от {{ current_user_review.date_added }}</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Оценка: {{ current_user_review.rating }}</h5>
+                        <div class="card-text">{{ current_user_review.text|safe }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+
+                {% for review in reviews %}
+                {% if not current_user.is_authenticated or (current_user.is_authenticated and review.user_id != current_user.id) %}
+                <div class="card my-3">
+                    <h5 class="card-header">{{ review.first_name }} {{ review.last_name }}</h5>
+                    <span class="px-3">{{ review.date_added }}</span>
+                    <div class="card-body">
+                        <h5 class="card-title">Оценка: {{ review.rating }}</h5>
+                        <div class="card-text">{{ review.text|safe }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,3 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+
 {% block content %}
-<h1>Test shtuka</h1>
+<div class="h-100 text-center d-flex p-3 bg-light">
+    <div class="m-auto">        
+        <div class="container">
+            <h1>Приветствуем вас в самой лучшей онлайн-библиотеке!</h1>
+            <p>Вы точно не уйдете недовольными</p>
+            <p>Только у нас вы можете просматривать интересующие вас книги с настоящими отзывами</p>
+            <p>Для просмотреть всех наших книг, перейдите в Каталог книг <b><i>(справа наверху страницы)</i></b></p>
+            <p>Не забудьте тоже оставить отзыв!</p>
+            <img src="{{ url_for('static', filename='pat.gif') }}" alt="Гифка">
+        </div>
+    </div>
+</div>
 {% endblock %}

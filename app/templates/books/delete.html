@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Удаление книги</h1>
+    <p>Вы уверены, что хотите удалить книгу "{{ book.title }}"?</p>
+    <form method="POST">
+        <button type="submit" class="btn btn-danger">Да</button>
+        <a href="{{ url_for('books.index') }}" class="btn btn-secondary">Нет</a>
+    </form>
+</div>
+{% endblock %}
