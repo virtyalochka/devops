@@ -10,7 +10,7 @@ RUN pip install -r requirements.txt
 COPY app app
 
 # Определяем переменную среды для Flask, чтобы указать, какое приложение запускать
-ENV FLASK_APP=app.py
+ENV FLASK_APP=/app/app.py
 
 # Определяем порт, который будет слушать Flask
 EXPOSE 5000
