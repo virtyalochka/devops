@@ -10,5 +10,3 @@ flask-login
 mysql-connector-python==8.0.33
 bleach
 markdown
-pylint==2.14.0
-bandit==1.7.0
