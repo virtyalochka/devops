@@ -5,9 +5,13 @@ FROM python:3.9
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+RUN pip install pylint bandit
 
 # Копируем исходные файлы приложения
 COPY app app
+
+RUN pylint --output-format=parseable *.py
+RUN bandit -r .
 
 # Определяем переменную среды для Flask, чтобы указать, какое приложение запускать
 ENV FLASK_APP=app.py
