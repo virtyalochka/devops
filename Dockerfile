@@ -3,18 +3,21 @@ FROM python:3.9
 
 # Устанавливаем зависимости
 WORKDIR /app
+
+# Копируем requirements.txt и устанавливаем зависимости
 COPY requirements.txt .
-RUN pip install -r requirements.txt
-RUN pip install pylint bandit
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Копируем исходные файлы приложения
 COPY app app
 
+# Выполняем статический анализ кода
+RUN pip install pylint bandit
 RUN pylint --output-format=parseable /app/*.py
-RUN bandit -r /app/.
+RUN bandit -r /app
 
 # Определяем переменную среды для Flask, чтобы указать, какое приложение запускать
-ENV FLASK_APP=app.py
+ENV FLASK_APP=app/app.py
 
 # Определяем порт, который будет слушать Flask
 EXPOSE 5000
