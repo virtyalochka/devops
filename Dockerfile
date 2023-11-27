@@ -10,8 +10,8 @@ RUN pip install pylint bandit
 # Копируем исходные файлы приложения
 COPY app app
 
-RUN pylint --output-format=parseable *.py
-RUN bandit -r .
+RUN pylint --output-format=parseable /app/*.py
+RUN bandit -r /app/.
 
 # Определяем переменную среды для Flask, чтобы указать, какое приложение запускать
 ENV FLASK_APP=app.py
