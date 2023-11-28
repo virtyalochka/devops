@@ -8,10 +8,11 @@ class ImageSaver:
         self.stream = file
         self.md5_hash = None
 
-    # def calculate_md5(self):
-    #     self.md5_hash = hashlib.md5(self.stream.read()).hexdigest()
-    #     self.stream.seek(0)
-    #     return self.md5_hash
+    def calculate_md5(self):
+        # nosec
+        self.md5_hash = hashlib.md5(self.stream.read()).hexdigest()
+        self.stream.seek(0)
+        return self.md5_hash
 
     def save(self):
         self.img = self.__find_by_md5_hash()
