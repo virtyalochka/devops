@@ -1,7 +1,6 @@
 import unittest
-from flask import Flask
 from app import app
-from mysql_db import MySQL  # Обратите внимание на путь к MySQL
+from mysql_db import MySQL
 
 class BookTestCase(unittest.TestCase):
     def setUp(self):
@@ -20,7 +19,7 @@ class BookTestCase(unittest.TestCase):
     def test_show_book(self):
         with self.app.test_request_context('/books/show/1'):
             response = self.app.get('/books/show/1')
-            self.assertIn(b'Book Title', response.data)  # Замените на фактический текст, который ожидается на странице
+            self.assertIn(b'Book Title', response.data)
 
 if __name__ == '__main__':
     unittest.main()
