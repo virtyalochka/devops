@@ -16,11 +16,13 @@ class MySQL:
 
     def close_connection(self, e=None):
         mysql = g.pop('mysql', None)
-
         if mysql is not None:
             mysql.close()
 
+    def connect(self):
+        return mysql.connector.connect(**self.config())  # Добавлен новый метод connect
+
     def connection(self):
         if 'mysql' not in g:
-            g.mysql = mysql.connector.connect(**self.config())
+            g.mysql = self.connect()  # Изменено на использование метода connect
         return g.mysql
