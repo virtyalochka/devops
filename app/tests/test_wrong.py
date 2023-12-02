@@ -16,10 +16,16 @@ class BookTestCase(unittest.TestCase):
         self.cursor.close()
         self.connection.close()
 
-    def test_show_book(self):
-        with self.app.test_request_context('/books/show/1'):
-            response = self.app.get('/books/show/1')
-            self.assertIn(b'Book Title', response.data)
+    def test_view_collection(self):
+        # Авторизуем пользователя
+        with self.app as c:
+            c.post('/auth/login', data=dict(
+                login='cool',
+                password='hacker',
+                remember_me=False
+            ))
+            response = c.get(f'/books/?page=1')
+            self.assertIn(b'admin_buttons text-center', response.data)
 
 if __name__ == '__main__':
     unittest.main()
