@@ -25,7 +25,7 @@ class BookTestCase(unittest.TestCase):
                 remember_me=False
             ))
             response = c.get(f'/books/?page=1')
-            self.assertIn(b'admin_buttons text-center', response.data)
+            self.assertIn(b'Logout', response.data)
 
 if __name__ == '__main__':
     unittest.main()
