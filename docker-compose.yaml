@@ -24,5 +24,15 @@ services:
     networks:
       - mynetwork
 
+  flyway:
+    image: flyway/flyway
+    command: -url=jdbc:mysql://mysql:3306/sys -user=root -password=Qwerty_123 -locations=./sys:/ migrate
+    volumes:
+      - ./migrations:/migrations
+    depends_on:
+      - mysql
+    networks:
+      - mynetwork
+
 networks:
   mynetwork:
