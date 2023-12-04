@@ -34,7 +34,6 @@ services:
       - mysql
     networks:
       - mynetwork
-    network_mode: bridge
 
 networks:
   mynetwork:
