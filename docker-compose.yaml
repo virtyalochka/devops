@@ -17,7 +17,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: Qwerty_123
       MYSQL_DATABASE: sys
-      MYSQL_SSL: false
+      MYSQL_SSL: "false"
     ports:
       - "3307:3306"
     volumes:
