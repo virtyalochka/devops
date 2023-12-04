@@ -24,7 +24,9 @@ class BookTestCase(unittest.TestCase):
                 password='qwerty',
                 remember_me=False
             ))
-
+            # Test connection
+            response = self.app.get('books/show/1')
+            self.assertEqual(response.status_code, 200)
             # Пытаемся просмотреть коллекцию
             response = c.get(f'collect/my_collections')
             self.assertIn(b'4', response.data)
