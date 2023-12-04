@@ -27,8 +27,9 @@ services:
 
   flyway:
     image: flyway/flyway
-    command: -url=jdbc:mysql://mysql:3306/sys -user=root -password=Qwerty_123 migrate -locations=filesystem:/app/sys
+    command: -url=jdbc:mysql://mysql:3306/sys -user=root -password=Qwerty_123 migrate -locations=filesystem:/migrat
     volumes:
+      - ./migrat:/flyway/sql
       - ./sys:/flyway/sql
     depends_on:
       - mysql
