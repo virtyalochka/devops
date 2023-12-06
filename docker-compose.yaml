@@ -8,7 +8,6 @@ services:
       - ./app:/app
     depends_on:
       - mysql
-      - flyway
     networks:
       - mynetwork
 
@@ -22,16 +21,6 @@ services:
     volumes:
       - ./sys:/docker-entrypoint-initdb.d
       - ./mysql-data:/var/lib/mysql
-    networks:
-      - mynetwork
-
-  flyway:
-    image: flyway/flyway
-    command: -url=jdbc:mysql://mysql:3306/sys -user=root -password=Qwerty_123 migrate -locations=filesystem:/flyway/sql
-    volumes:
-      - ./app/migrat:/flyway/sql
-    depends_on:
-      - mysql
     networks:
       - mynetwork
 
