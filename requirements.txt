@@ -10,3 +10,4 @@ flask-login
 mysql-connector-python==8.0.33
 bleach
 markdown
+prometheus_client==0.12.0

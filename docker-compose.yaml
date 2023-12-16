@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   web:
     build: .
@@ -24,5 +25,15 @@ services:
     networks:
       - mynetwork
 
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+    networks:
+      - mynetwork
+
 networks:
   mynetwork:
+
